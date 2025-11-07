@@ -10,8 +10,16 @@ import {
   StatusBar,
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
-import { useNavigation } from "@react-navigation/native";
 import { SafeAreaView, useSafeAreaInsets } from "react-native-safe-area-context";
+import { StackNavigationProp } from "@react-navigation/stack";
+import { RouteProp, useNavigation } from "@react-navigation/native";
+// Import HomeStackParamList từ file HomeStack.tsx vừa được sửa
+import { HomeStackParamList } from "../navigation/HomeStack";
+
+type LocationSelectScreenNavigationProp = StackNavigationProp<
+  HomeStackParamList,
+  'LocationSelect' // Màn hình hiện tại
+>;
 
 // 🔹 Nút hành động nhanh (Home, Work, Add Location)
 const QuickActionButton: React.FC<{ label: string; isAdd?: boolean }> = ({
@@ -49,21 +57,25 @@ const RecentLocationItem: React.FC<RecentItemProps> = ({
     </View>
   </View>
 );
-
+// 🔹 Định nghĩa kiểu cho route
+type RootStackParamList = {
+  LocationSelect: undefined;
+  ConfirmLocation: {
+    location: {
+      latitude: number;
+      longitude: number;
+      address: string;
+    };
+  };
+};
 export default function LocationSelectScreen() {
-  const navigation = useNavigation();
+  const navigation = useNavigation<LocationSelectScreenNavigationProp>();
   const insets = useSafeAreaInsets();
 
   return (
     <SafeAreaView
       style={[
         styles.safeArea,
-        {
-          paddingTop:
-            Platform.OS === "android"
-              ? StatusBar.currentHeight
-              : insets.top,
-        },
       ]}
     >
       {/* 🔹 HEADER */}
@@ -103,10 +115,22 @@ export default function LocationSelectScreen() {
             </TouchableOpacity>
           </View>
 
-          {/* SWAP BUTTON */}
-          <TouchableOpacity style={styles.swapButton}>
-            <Ionicons name="swap-vertical" size={22} color="#fff" />
-          </TouchableOpacity>
+          {/* CHECKMARK BUTTON */}
+<TouchableOpacity
+  style={styles.swapButton}
+  onPress={() =>
+    navigation.navigate("ConfirmLocation", {
+      location: {
+        latitude: 10.7619,
+        longitude: 106.682852,
+        address: "227, Nguyen Van Cu Street, W.4, D.5, Ho Chi Minh City",
+      },
+    })
+  }
+>
+  <Ionicons name="checkmark" size={22} color="#fff" />
+</TouchableOpacity>
+
 
           {/* DESTINATION */}
           <View style={styles.inputGroup}>

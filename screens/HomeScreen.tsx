@@ -23,7 +23,6 @@ export default function HomeScreen() {
   return (
     <SafeAreaView
       edges={["top", "left", "right"]} // 👈 Bảo vệ nội dung khỏi bị che ở notch và 2 bên
-      style={[styles.container, { paddingTop: insets.top }]}
     >
       <ScrollView
         showsVerticalScrollIndicator={false}

@@ -60,12 +60,6 @@ export default function SmartRouteScreen() {
     <SafeAreaView
       style={[
         styles.safeArea,
-        {
-          paddingTop:
-            Platform.OS === "android"
-              ? StatusBar.currentHeight
-              : insets.top,
-        },
       ]}
     >
       {/* HEADER */}
