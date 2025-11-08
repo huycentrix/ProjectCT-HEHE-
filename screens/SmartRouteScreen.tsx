@@ -55,6 +55,22 @@ const MOCK_REVIEWS = [
 export default function SmartRouteScreen() {
   const navigation = useNavigation();
   const insets = useSafeAreaInsets();
+  
+  // 💡 HÀM ĐIỀU HƯỚNG MỚI
+  const goToConfirmLocation = () => {
+      // 💡 LƯU Ý: Đây là nơi bạn sẽ lấy tọa độ/địa chỉ từ state
+      // Tạm thời dùng dữ liệu mock để điều hướng
+      const mockLocationData = {
+        latitude: 10.7720,
+        longitude: 106.6908,
+        address: "Ho Chi Minh City, Vietnam",
+      };
+
+      // Tên Route phải khớp với HomeStack: ConfirmLocation
+      (navigation as any).navigate('ConfirmLocation', {
+          location: mockLocationData,
+      });
+  };
 
   return (
     <SafeAreaView
@@ -79,7 +95,8 @@ export default function SmartRouteScreen() {
       >
         {/* INPUT ZONE */}
         <View style={styles.routeInputWrapper}>
-          <RouteInput />
+          {/* 💡 TRUYỀN HÀM MỚI VÀO PROP onCheckPress */}
+          <RouteInput onCheckPress={goToConfirmLocation} />
         </View>
 
         {/* PROMO BANNERS */}

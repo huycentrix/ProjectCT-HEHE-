@@ -20,12 +20,11 @@ export default function ForgotPasswordScreen() {
     const [code, setCode] = useState(''); 
     const [email, setEmail] = useState('abc@clc.fitus.edu.vn'); 
 
-    const handleConfirmCode = () => {
-        // 💡 Logic XÁC NHẬN MÃ CODE thành công:
-        console.log(`Code verified. Navigating to Reset Password.`);
+    const handleSend = () => {
+        console.log(`Sending password reset link to: ${email}`);
         
-        // Chuyển sang màn hình Đặt lại Mật khẩu Mới
-        (navigation as any).navigate('ResetPassword'); 
+        // 💡 CHUYỂN HƯỚNG TỚI MÀN HÌNH XÁC NHẬN VÀ TRUYỀN EMAIL QUA PARAMS
+        (navigation as any).navigate('VerifyEmail', { email: email }); 
     };
     
     const handleGoBack = () => {
@@ -52,30 +51,26 @@ export default function ForgotPasswordScreen() {
                 
                 {/* 2. VĂN BẢN HƯỚNG DẪN */}
                 <Text style={styles.instructionText}>
-                    Please enter the verification code sent to your email address: {email}.
+                    Please enter your email address. You will receive a link to create a new password via email.
                 </Text>
 
-                {/* 3. INPUT FIELD (Mã Code) */}
+                {/* 3. INPUT FIELD (Email) */}
                 <View style={styles.inputGroup}>
-                    <Ionicons name="lock-closed" size={20} color="#00C4CC" style={styles.icon} /> 
+                    <Ionicons name="mail" size={20} color="#00C4CC" style={styles.icon} />
                     <TextInput 
                         style={styles.input} 
-                        placeholder="Enter 6-digit code" 
-                        keyboardType="number-pad" 
-                        value={code}
-                        onChangeText={setCode}
-                        maxLength={6}
+                        placeholder="Email Address" 
+                        keyboardType="email-address" 
+                        value={email}
+                        onChangeText={setEmail}
                     />
                 </View>
 
-                {/* 4. NÚT XÁC NHẬN MỚI */}
-                <TouchableOpacity style={styles.sendButton} onPress={handleConfirmCode}>
-                    <Text style={styles.sendButtonText}>Confirm</Text>
+                {/* 4. SEND BUTTON */}
+                <TouchableOpacity style={styles.sendButton} onPress={handleSend}>
+                    <Text style={styles.sendButtonText}>Send</Text>
                 </TouchableOpacity>
-                
-                 <TouchableOpacity style={styles.resendButton} onPress={() => console.log('Resending code...')}>
-                    <Text style={styles.resendButtonText}>Resend Code (30s)</Text>
-                </TouchableOpacity>
+
 
             </ScrollView>
         </View>

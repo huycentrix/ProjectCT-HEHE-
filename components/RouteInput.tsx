@@ -1,26 +1,23 @@
 import React from "react";
-import { View, TextInput, StyleSheet, TouchableOpacity } from "react-native";
+import { View, TextInput, StyleSheet, TouchableOpacity, Text } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 
-// 💡 Props được thêm vào để quản lý trạng thái nhập liệu (Tùy chọn)
+// 💡 Props được thêm vào để quản lý state và event (Tùy chọn)
 interface RouteInputProps {
-  fromLocation: string;
-  toLocation: string;
-  onFromChange: (text: string) => void;
-  onToChange: (text: string) => void;
-  onSwap: () => void;
+  onCheckPress: () => void; // 💡 ĐÃ ĐỔI TỪ onSwap
+  // Giữ lại các props quản lý text nếu cần
+  fromText?: string;
+  toText?: string;
+  onFromChange?: (text: string) => void;
+  onToChange?: (text: string) => void;
 }
 
-// Giả định component không nhận props để giữ sự đơn giản cho thiết kế UI
-const RouteInput: React.FC = () => {
-  // Thay thế props bằng state tạm thời nếu bạn muốn xem input hoạt động
-  const [fromText, setFromText] = React.useState("Your Location");
-  const [toText, setToText] = React.useState("");
+// Giả sử component nhận prop onCheckPress
+const RouteInput: React.FC<RouteInputProps> = ({ onCheckPress }) => {
 
-  const handleSwap = () => {
-    // Logic đảo vị trí (trong ứng dụng thực tế)
-    console.log("Swapping locations...");
-  };
+  // Giữ lại state tạm thời cho hiển thị nếu không truyền prop
+  const [fromText, setFromText] = React.useState("Your Location");
+  const [toText, setToText] = React.useState("Input Destination");
 
   return (
     <View style={styles.container}>
@@ -52,9 +49,9 @@ const RouteInput: React.FC = () => {
         />
       </View>
 
-      {/* NÚT ĐẢO VỊ TRÍ */}
-      <TouchableOpacity onPress={handleSwap} style={styles.swapButton}>
-        <Ionicons name="repeat" size={24} color="white" />
+      {/* 💡 NÚT CHECKMARK MỚI */}
+      <TouchableOpacity onPress={onCheckPress} style={styles.swapButton}>
+        <Ionicons name="checkmark" size={24} color="white" /> {/* 💡 ĐÃ ĐỔI ICON */}
       </TouchableOpacity>
     </View>
   );
@@ -65,20 +62,19 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     marginVertical: 10,
-    // Màu nền trắng cho cả container để kiểm soát layout dễ hơn
   },
   inputContainer: {
-    flex: 1, // Chiếm phần lớn không gian
+    flex: 1, 
     backgroundColor: 'white',
     borderRadius: 15,
     paddingHorizontal: 15,
     paddingVertical: 10,
-    elevation: 3, // Tạo độ nổi bật
+    elevation: 3, 
     shadowColor: '#000',
     shadowOpacity: 0.05,
     shadowOffset: { width: 0, height: 2 },
     shadowRadius: 5,
-    marginRight: 10, // Khoảng cách tới nút swap
+    marginRight: 10, 
   },
   input: {
     fontSize: 16,
@@ -87,7 +83,7 @@ const styles = StyleSheet.create({
   },
   topInput: {
     borderBottomWidth: 1,
-    borderBottomColor: '#eee', // Đường kẻ mờ giữa hai input
+    borderBottomColor: '#eee', 
     marginBottom: 5,
     paddingBottom: 10,
   },
@@ -109,11 +105,12 @@ const styles = StyleSheet.create({
   },
   dash: {
     width: 2,
-    height: 30, // Chiều dài của đường gạch nối
+    height: 30, 
     backgroundColor: '#bbb',
   },
+  // NÚT CHECKMARK (Giữ nguyên style cũ)
   swapButton: {
-    backgroundColor: '#00AEEF', // Màu xanh dương cho nút
+    backgroundColor: '#00AEEF', 
     width: 45,
     height: 45,
     borderRadius: 22.5,
